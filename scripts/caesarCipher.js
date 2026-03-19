@@ -1,21 +1,25 @@
 export default function caesarCipher(str, shift){
     if (typeof str !== 'string' || typeof shift !== 'number') {return ''}
-    let alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('')
-    let alphabetsUppercase = alphabets.map(ch  => ch.toUpperCase())
+    const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('')
+    const doubled = alphabets.concat(alphabets)
     
     let res = ''
 
     for (let ch of str){
         if (alphabets.includes(ch)){
-            res += alphabets[alphabets.indexOf(ch) + (shift)] ? alphabets[alphabets.indexOf(ch) + (shift)]  : alphabets[ ((alphabets.indexOf(ch) + (shift) ) - (alphabets.length))]
+            const idx = alphabets.indexOf(ch)
+            const newIdx = idx + shift
+            res += newIdx >= 0 ? doubled[newIdx] : alphabets[newIdx + 26]
         }
-         else if (alphabetsUppercase.includes(ch)){
-            res += alphabetsUppercase[alphabetsUppercase.indexOf(ch) + shift] ? alphabetsUppercase[alphabetsUppercase.indexOf(ch) + shift]  : alphabetsUppercase[ ((alphabetsUppercase.indexOf(ch) + shift ) - (alphabetsUppercase.length))]
+        else if (alphabets.includes(ch.toLowerCase())){
+            const idx = alphabets.indexOf(ch.toLowerCase())
+            const newIdx = idx + shift
+            const char = newIdx >= 0 ? doubled[newIdx] : alphabets[newIdx + 26]
+            res += char.toUpperCase()
         }
         else{
             res += ch
         }
-        
     }
     return res
 }
